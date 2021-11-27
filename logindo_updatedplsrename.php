@@ -116,6 +116,13 @@ function logindo($username, $pwd) {
 	// You should session_start first before inserting into $_SESSION
 	$_SESSION["username"]=$data[0]["username"]; 
 	$_SESSION["role"]=$data[0]["role"]; 
+	$_SESSION['role'] == "admin";
+	
+	if((isset($_SESSION['role']) && $_SESSION['role'] == "admin")){
+	    header("location: admin.php");
+	}else{
+	    header("location: home.php");
+	}
 	printok("Added username & role into _SESSION");
 	
 	// the path matters when you delete the cookie again, needs to match
