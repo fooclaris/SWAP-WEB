@@ -5,14 +5,24 @@
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-
+h2 {
+  color: black;
+  font-family:Georgia, 'Times New Roman', Times, serif
+}
 body {
   background: #272727;
   font-family: "Montserrat", sans-serif;
+  color: white;
+}
+
+div {
+  margin-left: 55px;
+  margin-top: 30px;
 }
 
 .navMenu {
-    margin-left: auto;
+    margin-left: 35px;
+    margin-top: 30px;
 }
 
 .navMenu a {
@@ -31,49 +41,11 @@ body {
   color: #fddb3a;
 }
 
-.navMenu .dot {
-  width: 6px;
-  height: 6px;
-  background: #fddb3a;
-  border-radius: 50%;
-  opacity: 0;
-  -webkit-transform: translateX(30px);
-  transform: translateX(30px);
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
+a:hover {
+  text-decoration: underline;
 }
 
-.navMenu a:nth-child(1):hover ~ .dot {
-  -webkit-transform: translateX(30px);
-  transform: translateX(30px);
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
-  opacity: 1;
-}
-
-.navMenu a:nth-child(2):hover ~ .dot {
-  -webkit-transform: translateX(110px);
-  transform: translateX(110px);
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
-  opacity: 1;
-}
-
-.navMenu a:nth-child(3):hover ~ .dot {
-  -webkit-transform: translateX(200px);
-  transform: translateX(200px);
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
-  opacity: 1;
-}
-
-.navMenu a:nth-child(4):hover ~ .dot {
-  -webkit-transform: translateX(285px);
-  transform: translateX(285px);
-  -webkit-transition: all 0.2s ease-in-out;
-  transition: all 0.2s ease-in-out;
-  opacity: 1;
-}
 a{
-    padding: 8px;
+    padding: 10px;
 }
+

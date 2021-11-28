@@ -1,13 +1,21 @@
 <html>
 <head>
-	<style>
-		* {
-		  box-sizing: border-box;
-		}
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<?php include "nav-bar.php"?>
+<form method="post" action="logindo.php">
+<h2>LOGIN</h2>
+<input type="text" name="username" placeholder="Username">
+<input type="text" name="password" placeholder="Password">
+<a href="result"></a>
+<button>Sign in</button>
+<br>
+<a href="registerUser.php">Don't have an account? Click here</a>
+</form>
 
-		body {
-		  background-color: #eeeeee;
-		}
+</body>
+<style>
 
 		img {
 		  display: block;
@@ -36,54 +44,28 @@
 		  outline: none;
 		  display: block;
 		  margin: 20px auto 20px auto;
-          box-shadow: 0 2px 10px -3px #719BE6;
+          box-shadow: 0 2px 10px -3px grey;
 		}
 
 		button {
 		  border-radius: 100px;
 		  border: none;
-		  background: #719BE6;
+		  background: grey;
 		  width: 60%;
 		  padding: 10px;
-		  color: #FFFFFF;
-		  margin-top: 25px;
-		  box-shadow: 0 2px 10px -3px #719BE6;
+		  color: white;
+		  box-shadow: 0 2px 10px -3px white;
 		  display: block;
-		  margin: 55px auto 10px auto;
+		  margin: 10px 67px ;
 		}
 
 		a {
 		  text-align: center;
-		  margin-top: 30px;
-		  color: #719BE6;
+		  color: grey;
 		  text-decoration: none;
-		  padding: 5px;
-		  display: inline-block;
 		}
 
-		a:hover {
-		  text-decoration: underline;
-		}
 
 	</style>
-</head>
-
-<body>
-    <!--nav bar-->
-    <nav class="navMenu">
-      <a href="home.php">Home</a>
-      <a href="#">Products</a>
-      <a href="#">About</a>
-      <a href="">Login</a>
-      <div class="dot"></div>
-    </nav>
-
-<form method="post" action="logindo.php">
-<input type="text" name="username" placeholder="Username">
-<input type="text" name="password" placeholder="Password">
-<a href="result"></a>
-<button>Sign in</button>
-</form>
-
-</body>
+	
 </html>

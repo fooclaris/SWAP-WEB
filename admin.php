@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<?php include "nav-bar.php"?>
+<?php include "admin-nav-bar.php"?>
       
 </body>
 </html>
