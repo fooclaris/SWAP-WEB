@@ -9,15 +9,16 @@ $checkall=$checkall && checkpost("username",true,"");
 $checkall=$checkall && checkpost("password",true,"");
 if (!$checkall) {
 	printmessage("Error checking inputs<br>Please return to login page");
+	header("location: login.php");
 	die();
-}
-logindo($_POST["username"], $_POST["password"]);
-
+}else{
+	logindo($_POST["username"], $_POST["password"]);
+};
 // return true if checks ok
 function checkpost($input, $mandatory, $pattern) {
-
+	
 	$inputvalue=$_POST[$input];
-
+	
 	if (empty($inputvalue)) {
 		printmessage("$input field is empty");
 		if ($mandatory) return false;
@@ -48,7 +49,7 @@ function debug() {
 }
 
 function logindo($username, $pwd) {
-
+	
 	require "db-connection.php";
 	//require "fxprinttable.php";
 	
@@ -58,7 +59,7 @@ function logindo($username, $pwd) {
 		if ($con) echo "FAILED: ". mysqli_error($con) . "<br>";
 		echo "</pre>";
 	}
-
+	
 	function printok($message) {
 		echo "<pre>";
 		echo "--------------------------------------------<br>";
@@ -66,7 +67,7 @@ function logindo($username, $pwd) {
 		echo "OK<br>";
 		echo "</pre>";
 	}
-
+	
 	try {
 		$con=mysqli_connect($db_hostname,$db_username,$db_password);
 	}
@@ -78,50 +79,50 @@ function logindo($username, $pwd) {
 		die();
 	}
 	else printok("Connecting to $db_hostname");
-
+	
 	$result=mysqli_select_db($con, $db_database);
 	if (!$result) {
 		printerror("Selecting $db_database",$con);
 		die();
 	}
 	else printok("Selecting $db_database");
-
-	$query="SELECT  username, role FROM tp_amc.users
-		WHERE username ='$username'
-		AND password = SHA1('$pwd')";
+	
+	$query="SELECT  user_id,username, role FROM tp_amc.users
+	WHERE username ='$username'
+	AND password = SHA1('$pwd')";
 	$result=mysqli_query($con,$query);
-	if (!$result) {
-		printerror("Querying $db_database",$con);
+	if (mysqli_num_rows($result) !== 1) {
+		header('location: loginform.php');
+		$msg = "<pre><a>Username or Password is incorrect please try again.</a></pre>";
 		die();
 	}
-	else printok($query);
-
+	else 
+	printok($query);
 	$nrows=mysqli_num_rows($result);
 	echo "<pre>#rows=$nrows</pre>";
 	echo "<br>";
-
 	$data=mysqli_fetch_all($result,MYSQLI_ASSOC);
 	echo "<pre>";
 	// print_r works
 	// print_r($data);
 	//array2texttable($data);
 	echo "</pre>";
-
+	
 	// ------------------------------------
 	// Add username into the global variable $_SESSION
-	debug();
 	session_start();
 	printok("Started session");
 	debug();
 	// You should session_start first before inserting into $_SESSION
 	$_SESSION["username"]=$data[0]["username"]; 
 	$_SESSION["role"]=$data[0]["role"]; 
+	$_SESSION["user_id"]=$data[0]["user_id"];
 	$_SESSION['role'] == "admin";
 	
 	if((isset($_SESSION['role']) && $_SESSION['role'] == "admin")){
-	    header("location: admin.php");
+		header("location: admin.php");
 	}else{
-	    header("location: home.php");
+		header("location: home.php");
 	}
 	printok("Added username & role into _SESSION");
 	
@@ -134,11 +135,24 @@ function logindo($username, $pwd) {
 	// ------------------------------------
 	
 	mysqli_free_result($result);
-
+	
 	mysqli_close($con);
 	printok("Closing connection");
-	
-	echo "<pre><a href='loginsuccess.php'>Click to goto Login success</a></pre>";
 }
-
 ?>
+
+
+
+<html>
+<body>
+<?php include "nav-bar.php"?>
+<form class="form" method="post" action="logindo.php">
+<input type="text" name="username" placeholder="Username">
+<input type="text" name="password" placeholder="Password">
+<a href="result"></a>
+<button>Sign in</button>
+<a href="registerUser.php">If you do not have an account click here</a>
+<?php echo $msg ?> 
+</form>
+</body>
+</html>
