@@ -5,57 +5,55 @@ include "db-connection.php";
 
 $username = $_POST ['username'];
 $pwd = $_POST ['password'];
+$cfmpwd = $_POST['confirmPassword'];
 $address = $_POST ['address'];
 $firstName = $_POST ['firstName'];
 $lastName = $_POST ['lastName'];
 $mobileNumber = $_POST ['mobileNumber'];
 $email = $_POST ['email'];
+$role = 'default';
 
-	
-	function printerror($message, $con) {
-		echo "<pre>";
-		echo "$message<br>";
-		if ($con) echo "FAILED: ". mysqli_error($con). "<br>";
-		echo "</pre>";
-	}
-
-	function printok($message) {
-		echo "<pre>";
-		echo "$message<br>";
-		echo "OK<br>";
-		echo "</pre>";
-	}
-
-	try {
-	$con=mysqli_connect($db_hostname,$db_username,$db_password);
-	}
-	catch (Exception $e) {
-		printerror($e->getMessage(),$con);
-	}
-	if (!$con) {
-		printerror("Connecting to $db_hostname", $con);
-		die();
-	}
-	else printok("Connecting to $db_hostname");
-
-	$result=mysqli_select_db($con, $db_database);
-	if (!$result) {
-		printerror("Selecting $db_database",$con);
-		die();
-	}
-	else printok("Selecting $db_database");
-
-
-	$query = "INSERT INTO users (username, password, address, firstName, lastName, mobileNumber, email, role) 
-    VALUES ('$username', SHA1('$pwd'), '$address', '$firstName', '$lastName','$mobileNumber', '$email', 'default')";
-	$result=mysqli_query($con,$query);
-	if (!$result) {
-		printerror("Selecting $db_database",$con);
-		die();
-	}
-	else printok($query);
-
-	mysqli_close($con);
-	printok("Closing connection");
-
+$con=mysqli_connect($db_hostname,$db_username,$db_password);
+$result=mysqli_select_db($con, $db_database);
+//checkes if the username has already been existed
+$resultcheck="SELECT * FROM users WHERE username = '$username'";
+$resultchecked=mysqli_query($con,$resultcheck);
+if(mysqli_num_rows($resultchecked)){
+$message = "Username has already been taken";
+}else{
+    //check if passwords match if not dont execute insertion
+    if ($pwd !== $cfmpwd){
+        $message = "Passwords do not match please try again.";
+        
+    }else{
+        $pwd = SHA1("$pwd");
+        $query = $con->prepare("INSERT INTO users (username, password, address, firstName, lastName, mobileNumber, email, role) 
+        VALUES (?,?,?,?,?,?,?,?)");
+        $query->bind_param('ssssssss',$username,$pwd,$address,$firstName,$lastName,$mobileNumber,$email,$role);
+        if (!$query->execute()) {
+            die();
+            $message="Invalid fields please try again";
+        }
+        else
+        
+            $message = "Account successfully created!";
+        
+    }
+}
 ?>
+
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+        <link href="stylesheets/style.css" rel="stylesheet" type="text/css"/>
+        <title>We Are Connected - Edit Profile</title>
+    </head>
+    <body>
+        <?php include "nav-bar.php" ?>
+        <h3>We Are Connected - Edit Profile</h3>
+        <?php
+        echo $message;
+        ?>
+    </body>
+</html>
