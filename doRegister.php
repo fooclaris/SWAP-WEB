@@ -13,6 +13,10 @@ $mobileNumber = $_POST ['mobileNumber'];
 $email = $_POST ['email'];
 $role = 'default';
 
+//encode and hashing
+$hash="sha256";
+$encrypted_password = base64_encode(hash($hash,$pwd)); //encodes and hashes and store the value
+
 $con=mysqli_connect($db_hostname,$db_username,$db_password);
 $result=mysqli_select_db($con, $db_database);
 //checkes if the username has already been existed
@@ -26,10 +30,9 @@ $message = "Username has already been taken";
         $message = "Passwords do not match please try again.";
         
     }else{
-        $pwd = SHA1("$pwd");
         $query = $con->prepare("INSERT INTO users (username, password, address, firstName, lastName, mobileNumber, email, role) 
         VALUES (?,?,?,?,?,?,?,?)");
-        $query->bind_param('ssssssss',$username,$pwd,$address,$firstName,$lastName,$mobileNumber,$email,$role);
+        $query->bind_param('ssssssss',$username,$encrypted_password,$address,$firstName,$lastName,$mobileNumber,$email,$role);
         if (!$query->execute()) {
             die();
             $message="Invalid fields please try again";
@@ -40,6 +43,7 @@ $message = "Username has already been taken";
         
     }
 }
+///^[A-Za-z0-9._%+-]+@ADAB3D21.MZM$/i email regex
 ?>
 
 <!DOCTYPE HTML>
