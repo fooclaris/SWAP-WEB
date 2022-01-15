@@ -75,7 +75,8 @@ a:hover {
 <body>
 
 
-<?php include "nav-bar.php"?>
+<?php 
+    include "nav-bar.php"?>
 <form class="form" method="post">
 <input type="text" name="username" placeholder="Username">
 <input type="text" name="password" placeholder="Password">
